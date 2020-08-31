@@ -1,9 +1,27 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 
 class Home extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            faces: 6
+        };
+
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    handleChange(event) {
+        this.setState({faces: event.target.value});
+    }
+
     render() {
         return (
-            <h1>Dice&#160;Counter</h1>
+            <React.Fragment>
+                <h1>Dice&#160;Counter</h1>
+                <input type="text" value={this.state.faces} onChange={this.handleChange} />
+                <Link to={{pathname: "/action", state: {faces: this.state.faces} }}>Action</Link>
+            </React.Fragment>
         );
     }
 }
