@@ -7,13 +7,8 @@ class DiceButton extends React.Component{
         this.addOne = this.addOne.bind(this);
 
         this.state = {
-            total: this.props.total,
             count: 0
         };
-    }
-
-    componentDidUpdate(prevProps, prevState){
-        console.log(prevProps, prevState);
     }
 
     addOne(){
