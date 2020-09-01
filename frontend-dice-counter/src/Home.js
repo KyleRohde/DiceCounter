@@ -4,15 +4,15 @@ import {Link} from 'react-router-dom';
 class Home extends React.Component {
     constructor(props) {
         super(props);
+        this.handleChange = this.handleChange.bind(this);
+
         this.state = {
             faces: 6
         };
-
-        this.handleChange = this.handleChange.bind(this);
     }
 
     handleChange(event) {
-        this.setState({faces: event.target.value});
+        this.setState({ faces: event.target.value });
     }
 
     render() {
