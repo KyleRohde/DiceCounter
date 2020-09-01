@@ -16,14 +16,15 @@ class Action extends React.Component {
     increment(){
         let plus = this.state.total;
         plus++;
-        this.setState({ total: plus }, ()=>{console.log(plus)});
+        this.setState({ total: plus });
     }
 
     render() {
         let buttons = [];
-        for(let x = 0; x < this.props.location.state.faces; x++){
+        let maxFaces = this.props.location.state.faces
+        for(let x = 0; x < maxFaces; x++){
             buttons.push(
-                <DiceButton key={x+1} total={this.state.total} increment={this.increment} />
+                <DiceButton key={x+1} num={x+1} total={this.state.total} max={maxFaces} increment={this.increment} />
             );
         }
 
@@ -35,7 +36,7 @@ class Action extends React.Component {
                     </Row>
                 </Col>
                 <Col md={2} lg={12}>
-                    <Link to="/">{this.props.location.state.faces}</Link>
+                    <Link to="/">{this.state.total}</Link>
                 </Col>
             </Container>
         );
