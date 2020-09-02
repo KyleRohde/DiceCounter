@@ -5,6 +5,7 @@ class DiceButton extends React.Component{
     constructor(props) {
         super(props);
         this.addOne = this.addOne.bind(this);
+        this.colorize = this.colorize.bind(this);
 
         this.state = {
             count: 0,
@@ -15,18 +16,27 @@ class DiceButton extends React.Component{
 
     componentDidUpdate(prevProps){
         if(this.props.total && this.props.total !== prevProps.total){
-            let num = ((this.state.count / this.props.total) * 100).toFixed(2);
-
-            let skew = ((this.state.count / this.props.total) / (1 / this.props.max)).toFixed(2);
-            let g = Math.trunc(255 * (1 - Math.abs(skew - 1))).toString(16);
-            let r = skew < 1 ? Math.trunc(400 * (1 - skew)).toString(16) : 0;
-            r = r > 255 ? 255 : r;
-            let b = skew > 1 ? Math.trunc(400 * (skew - 1)).toString(16) : 0;
-            b = b > 255 ? 255 : b;
-            let newColor = "#" + ("0" + r).slice(-2) + ("0" + g).slice(-2) + ("0" + b).slice(-2) + "66";
-
-            this.setState({ percent: num, color: newColor });
+            this.colorize();
         }
+    }
+    
+    colorize(){
+        let num = ((this.state.count / this.props.total) * 100).toFixed(2);
+
+        let skew = ((this.state.count / this.props.total) / (1 / this.props.max)).toFixed(2);
+        let g = Math.trunc(200 * (1 - Math.abs(skew - 1)));
+        let r = skew < 1 ? Math.trunc(255 * (1 - skew)) : 0;
+        let b = skew > 1 ? Math.trunc(255 * (skew - 1)) : 0;
+
+        g = g > 255 ? 255 : (g < 0 ? 0 : g);
+        r = r > 255 ? 255 : (r < 0 ? 0 : r);
+        b = b > 255 ? 255 : (b < 0 ? 0 : b);
+
+        let newColor = "#" + ("0" + r.toString(16)).slice(-2) +
+            ("0" + g.toString(16)).slice(-2) +
+            ("0" + b.toString(16)).slice(-2) + "66";
+
+        this.setState({ percent: num, color: newColor });
     }
 
     addOne(){
