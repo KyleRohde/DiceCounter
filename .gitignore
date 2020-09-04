@@ -22,3 +22,9 @@
 #npm-debug.log*
 #yarn-debug.log*
 #yarn-error.log*
+
+/backend-dice-counter/.vs/
+/backend-dice-counter/*.sln
+backend-dice-counter/backend-dice-counter/[Bb]in/
+backend-dice-counter/backend-dice-counter/[Oo]bj/
+backend-dice-counter/backend-dice-counter/*.user
