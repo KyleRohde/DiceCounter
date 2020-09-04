@@ -39,18 +39,17 @@ class Action extends React.Component {
         let maxFaces = this.props.location.state.faces
         for(let x = 0; x < maxFaces; x++){
             buttons.push(
-                <DiceButton key={x+1} num={x+1} total={this.state.total} count={this.state.history[x]} max={maxFaces} increment={this.increment} />
+                <DiceButton key={x+1} num={x+1}
+                    total={this.state.total} count={this.state.history[x]} max={maxFaces} increment={this.increment} />
             );
         }
 
         return (
             <Container>
-                <Col md={10} lg={12}>
-                    <Row>
-                        {buttons}
-                    </Row>
+                <Col md={12} xs={10}>
+                    {buttons}
                 </Col>
-                <Col md={2} lg={12}>
+                <Col md={12} xs={2}>
                     <Link to="/">{this.state.total}</Link>
                 </Col>
             </Container>

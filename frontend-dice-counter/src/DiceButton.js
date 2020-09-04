@@ -32,8 +32,8 @@ class DiceButton extends React.Component{
         // Calculate colors based on whether the number has been rolled more or less than average
         let skew = ((this.state.count / this.props.total) / (1 / this.props.max)).toFixed(2);
         let g = Math.trunc(200 * (1 - Math.abs(skew - 1)));
-        let r = skew < 1 ? Math.trunc(255 * (1 - skew)) : 0;
-        let b = skew > 1 ? Math.trunc(255 * (skew - 1)) : 0;
+        let r = skew < 1 ? Math.trunc(500 * (1 - skew)) : 0;
+        let b = skew > 1 ? Math.trunc(500 * (skew - 1)) : 0;
 
         // Impose bounds for hex colors
         g = g > 255 ? 255 : (g < 0 ? 0 : g);
@@ -56,12 +56,10 @@ class DiceButton extends React.Component{
 
     render() {
         return (
-            <Col md={6} xs={3}>
-                <button onClick={this.addOne} style={{background: this.state.color}}>
-                    <p>{this.props.num}</p>
-                    {this.state.percent}%
-                </button>
-            </Col>
+            <button onClick={this.addOne} style={{background: this.state.color}}>
+                <p>{this.props.num}</p>
+                {this.state.percent}%
+            </button>
         );
     }
 }
