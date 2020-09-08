@@ -12,6 +12,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using backend_dice_counter.Models;
+using MySqlConnector;
+using backend_dice_counter.Extensions;
 
 namespace backend_dice_counter
 {
@@ -27,7 +29,7 @@ namespace backend_dice_counter
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<DiceContext>(opt => opt.UseInMemoryDatabase("DiceList"));
+            services.ConfigureMySqlContext(Configuration);
             services.AddControllers();
         }
 
