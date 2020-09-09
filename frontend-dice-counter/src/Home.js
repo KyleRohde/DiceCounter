@@ -1,10 +1,12 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import dbConnection from './helpers/apiConnections.js'
 
 class Home extends React.Component {
     constructor(props) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
+        this.fetchDice = this.fetchDice.bind(this);
 
         this.state = {
             faces: 6,
@@ -24,6 +26,15 @@ class Home extends React.Component {
         }
     }
 
+    async fetchDice(){
+        try {
+            const res = await dbConnection.get('/DiceItems');
+            console.log(res.data);
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -34,7 +45,9 @@ class Home extends React.Component {
                 <label htmlFor="history">Previous rolls by face (CSV, low - high):&#160;</label>
                 <input id="history" type="text" value={this.state.history} onChange={this.handleChange} />
                 <br />
-                <Link to={{pathname: "/action", state: this.state }}>Action</Link>
+                <Link to={{pathname: "/action", state: this.state }}>Create New</Link>
+                <br />
+                <button onClick={this.fetchDice}>View Existing Dice</button>
             </React.Fragment>
         );
     }

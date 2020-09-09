@@ -1,5 +1,4 @@
 import React from 'react';
-import {Col} from 'react-bootstrap';
 
 class DiceButton extends React.Component{
     constructor(props) {

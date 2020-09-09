@@ -30,6 +30,7 @@ namespace backend_dice_counter
         public void ConfigureServices(IServiceCollection services)
         {
             services.ConfigureMySqlContext(Configuration);
+            services.ConfigureCors();
             services.AddControllers();
         }
 
@@ -42,6 +43,8 @@ namespace backend_dice_counter
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCors("CorsPolicy");
 
             app.UseRouting();
 
