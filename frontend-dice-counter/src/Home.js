@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import {Container, Row, Col} from 'react-bootstrap';
 import dbConnection from './helpers/apiConnections.js'
 
 class Home extends React.Component {
@@ -10,7 +11,8 @@ class Home extends React.Component {
 
         this.state = {
             faces: 6,
-            history: ""
+            history: "",
+            entries: []
         };
     }
 
@@ -29,7 +31,18 @@ class Home extends React.Component {
     async fetchDice(){
         try {
             const res = await dbConnection.get('/DiceItems');
-            console.log(res.data);
+
+            let newEntries = [];
+            for(let item of res.data){
+                let transitionState = {pathname: "/action", state: {faces: item.faces, history: item.roll_History} }
+                newEntries.push(<Row>
+                    <Col>{item.description}</Col>
+                    <Col><Link to={transitionState}>
+                        Roll Existing</Link></Col>
+                </Row>);
+            }
+
+            this.setState({entries: newEntries});
         } catch (e) {
             console.log(e);
         }
@@ -48,6 +61,9 @@ class Home extends React.Component {
                 <Link to={{pathname: "/action", state: this.state }}>Create New</Link>
                 <br />
                 <button onClick={this.fetchDice}>View Existing Dice</button>
+                <Container>
+                    {this.state.entries}
+                </Container>
             </React.Fragment>
         );
     }
