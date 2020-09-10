@@ -31,14 +31,20 @@ class Home extends React.Component {
     async fetchDice(){
         try {
             const res = await dbConnection.get('/DiceItems');
-
             let newEntries = [];
-            for(let item of res.data){
-                let transitionState = {pathname: "/action", state: {faces: item.faces, history: item.roll_History} }
-                newEntries.push(<Row>
-                    <Col>{item.description}</Col>
-                    <Col><Link to={transitionState}>
-                        Roll Existing</Link></Col>
+            for(let itemElem in res.data){
+                let transitionState = {
+                    pathname: "/action",
+                    state: {
+                        faces: res.data[itemElem].faces,
+                        history: res.data[itemElem].roll_History,
+                        apiMethod: "put",
+                        diceId: res.data[itemElem].id
+                    }
+                }
+                newEntries.push(<Row key={itemElem}>
+                    <Col>{res.data[itemElem].description}</Col>
+                    <Col><Link to={transitionState}>Roll Existing</Link></Col>
                 </Row>);
             }
 
@@ -49,6 +55,9 @@ class Home extends React.Component {
     }
 
     render() {
+        let transitionState = this.state;
+        transitionState.apiMethod = "post";
+
         return (
             <React.Fragment>
                 <h1>Dice&#160;Counter</h1>
@@ -58,8 +67,8 @@ class Home extends React.Component {
                 <label htmlFor="history">Previous rolls by face (CSV, low - high):&#160;</label>
                 <input id="history" type="text" value={this.state.history} onChange={this.handleChange} />
                 <br />
-                <Link to={{pathname: "/action", state: this.state }}>Create New</Link>
-                <br />
+                <Link to={{pathname: "/action", state: transitionState }}>Create New From Above Fields</Link>
+                <br /><br />
                 <button onClick={this.fetchDice}>View Existing Dice</button>
                 <Container>
                     {this.state.entries}

@@ -7,7 +7,6 @@ class DiceButton extends React.Component{
         this.colorize = this.colorize.bind(this);
 
         this.state = {
-            count: this.props.count,
             percent: 0,
             color: "#dddddd66"
         };
@@ -26,10 +25,10 @@ class DiceButton extends React.Component{
     }
     
     colorize(){
-        let num = ((this.state.count / this.props.total) * 100).toFixed(2);
+        let num = ((this.props.count / this.props.total) * 100).toFixed(2);
 
         // Calculate colors based on whether the number has been rolled more or less than average
-        let skew = ((this.state.count / this.props.total) / (1 / this.props.max)).toFixed(2);
+        let skew = ((this.props.count / this.props.total) / (1 / this.props.max)).toFixed(2);
         let g = Math.trunc(200 * (1 - Math.abs(skew - 1)));
         let r = skew < 1 ? Math.trunc(500 * (1 - skew)) : 0;
         let b = skew > 1 ? Math.trunc(500 * (skew - 1)) : 0;
@@ -47,10 +46,7 @@ class DiceButton extends React.Component{
     }
 
     addOne(){
-        let plus = this.state.count;
-        plus++;
-        this.setState({ count: plus });
-        this.props.increment();
+        this.props.increment(this.props.num);
     }
 
     render() {
