@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import {Container, Row, Col} from 'react-bootstrap';
-import dbConnection from './helpers/apiConnections.js'
+import { dbGet } from './helpers/apiConnections.js'
 
 class Home extends React.Component {
     constructor(props) {
@@ -30,7 +30,7 @@ class Home extends React.Component {
 
     async fetchDice(){
         try {
-            const res = await dbConnection.get('/DiceItems');
+            let res = await dbGet('/DiceItems');
             let newEntries = [];
             for(let itemElem in res.data){
                 let transitionState = {
@@ -38,8 +38,9 @@ class Home extends React.Component {
                     state: {
                         faces: res.data[itemElem].faces,
                         history: res.data[itemElem].roll_History,
-                        apiMethod: "put",
-                        diceId: res.data[itemElem].id
+                        diceId: res.data[itemElem].id,
+                        description: res.data[itemElem].description,
+                        apiMethod: "put"
                     }
                 }
                 newEntries.push(<Row key={itemElem}>

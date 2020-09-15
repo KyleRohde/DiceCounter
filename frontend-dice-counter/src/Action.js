@@ -1,14 +1,13 @@
 import React from 'react';
-import {Container, Row, Col} from 'reactstrap';
+import {Container, Row, Col} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import DiceButton from './DiceButton';
-import dbConnection from './helpers/apiConnections';
+import { dbPut, dbPost } from './helpers/apiConnections';
 
 class Action extends React.Component {
     constructor(props) {
         super(props);
         this.increment = this.increment.bind(this);
-        this.saveData = this.saveData.bind(this);
         this.assembleData = this.assembleData.bind(this);
 
         let historyParse = (this.props.location.state.history).split(',');
@@ -39,33 +38,20 @@ class Action extends React.Component {
         this.setState({ total: plus, history: newHistory });
     }
 
-    async saveData(method, endpoint, payload){
-        switch(method){
-            case "put":
-                await dbConnection.put(endpoint, payload);
-                break;
-            case "post":
-                await dbConnection.post(endpoint, payload);
-                break;
-            default:
-                console.log("Improper API method call");
-        }
-    }
-
     assembleData(){
         let payload = {
-            id: this.props.location.state.diceId,
-            faces: this.props.location.state.faces,
+            faces: parseInt(this.props.location.state.faces),
             roll_history: this.state.history.join()
         };
         switch(this.props.location.state.apiMethod){
             case "put":
                 payload.description = this.props.location.state.description;
-                this.saveData(this.props.location.state.apiMethod, "/DiceItems/" + this.props.location.state.diceId, payload);
+                payload.id = this.props.location.state.diceId;
+                dbPut("/DiceItems/" + this.props.location.state.diceId, payload);
                 break;
             case "post":
                 payload.description = "Temp " + this.props.location.state.faces;
-                this.saveData(this.props.location.state.apiMethod, "/DiceItems", payload);
+                dbPost("/DiceItems", payload);
                 break;
             default:
                 console.log("Improper API method call");
@@ -83,12 +69,12 @@ class Action extends React.Component {
         }
 
         return (
-            <Container>
+            <Container fluid>
             <Row>
-                <Col>
+                <Col xs={8}>
                     {buttons}
                 </Col>
-                <Col>
+                <Col xs={4}>
                     <Link to="/">{this.state.total}</Link>
                 </Col>
             </Row>
