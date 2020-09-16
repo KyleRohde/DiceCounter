@@ -1,13 +1,12 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import {Container, Row, Col} from 'react-bootstrap';
-import { dbGet } from './helpers/apiConnections.js'
+import DiceFetcher from '../components/DiceFetcher.js';
 
 class Home extends React.Component {
     constructor(props) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
-        this.fetchDice = this.fetchDice.bind(this);
+        this.dataHandler = this.dataHandler.bind(this);
 
         this.state = {
             faces: 6,
@@ -25,34 +24,11 @@ class Home extends React.Component {
                 this.setState({ history: event.target.value });
                 break;
             default:
-        }
+        };
     }
 
-    async fetchDice(){
-        try {
-            let res = await dbGet('/DiceItems');
-            let newEntries = [];
-            for(let itemElem in res.data){
-                let transitionState = {
-                    pathname: "/action",
-                    state: {
-                        faces: res.data[itemElem].faces,
-                        history: res.data[itemElem].roll_History,
-                        diceId: res.data[itemElem].id,
-                        description: res.data[itemElem].description,
-                        apiMethod: "put"
-                    }
-                }
-                newEntries.push(<Row key={itemElem}>
-                    <Col>{res.data[itemElem].description}</Col>
-                    <Col><Link to={transitionState}>Roll Existing</Link></Col>
-                </Row>);
-            }
-
-            this.setState({entries: newEntries});
-        } catch (e) {
-            console.log(e);
-        }
+    dataHandler(data){
+        console.log(data);
     }
 
     render() {
@@ -70,10 +46,7 @@ class Home extends React.Component {
                 <br />
                 <Link to={{pathname: "/action", state: transitionState }}>Create New From Above Fields</Link>
                 <br /><br />
-                <button onClick={this.fetchDice}>View Existing Dice</button>
-                <Container>
-                    {this.state.entries}
-                </Container>
+                <DiceFetcher passData={this.dataHandler}/>
             </React.Fragment>
         );
     }

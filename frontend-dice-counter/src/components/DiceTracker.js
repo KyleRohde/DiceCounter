@@ -2,9 +2,9 @@ import React from 'react';
 import {Container, Row, Col} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 import DiceButton from './DiceButton';
-import { dbPut, dbPost } from './helpers/apiConnections';
+import { dbPut, dbPost } from '../helpers/apiConnections';
 
-class Action extends React.Component {
+class DiceAction extends React.Component {
     constructor(props) {
         super(props);
         this.increment = this.increment.bind(this);
@@ -86,4 +86,4 @@ class Action extends React.Component {
     }
 }
 
-export default Action;
+export default DiceAction;
