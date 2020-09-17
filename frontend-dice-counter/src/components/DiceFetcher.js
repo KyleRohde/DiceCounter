@@ -1,5 +1,5 @@
 import React from 'react';
-import {Container} from 'react-bootstrap';
+import { Container } from 'reactstrap';
 import { dbGet } from '../helpers/apiConnections.js';
 import DiceDetail from './DiceDetail.js';
 

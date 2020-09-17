@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import DiceFetcher from '../components/DiceFetcher.js';
 
 class Home extends React.Component {
@@ -29,6 +29,7 @@ class Home extends React.Component {
 
     dataHandler(data){
         console.log(data);
+        useHistory.push('/Action');
     }
 
     render() {
