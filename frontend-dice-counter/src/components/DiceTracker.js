@@ -67,6 +67,7 @@ class DiceTracker extends React.Component {
                     total={this.state.total} count={this.state.history[x]} max={maxFaces} increment={this.increment} />
             );
         }
+        const sizing = this.props.faces <= 12 ? Math.ceil(this.props.faces/2) : (this.props.faces%4 === 0 ? 4 : 6);
 
         return (
             <Container>
@@ -75,7 +76,7 @@ class DiceTracker extends React.Component {
                 </Row>
                 <Row>
                     <Col xs={10}>
-                        <Row xs={2} md={this.props.faces/2}>{buttons}</Row>
+                        <Row xs={2} md={sizing}>{buttons}</Row>
                     </Col>
                     <Col xs={2}>
                         <Link to="/">{this.state.total}</Link>

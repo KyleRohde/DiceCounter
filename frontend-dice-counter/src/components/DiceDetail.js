@@ -14,8 +14,9 @@ class DiceDetail extends React.Component{
     render(){
         return(
             <Row>
-                <Col>{this.props.data.description}</Col>
-                <Col><button onClick={this.dataToParent}>Select</button></Col>
+                <Col xs={8} s={6} md={4}>{this.props.data.description}</Col>
+                <Col xs={2}>{"d" + this.props.data.faces}</Col>
+                <Col xs={2}><button onClick={this.dataToParent}>Select</button></Col>
             </Row>
         );
     }

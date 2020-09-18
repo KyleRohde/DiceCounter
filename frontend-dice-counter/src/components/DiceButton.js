@@ -53,9 +53,9 @@ class DiceButton extends React.Component{
     render() {
         return (
             <Col>
-                <button onClick={this.addOne} style={{background: this.state.color}}>
+                <button onClick={this.addOne} style={{background: this.state.color, width: '100%'}}>
                     <p>{this.props.num}</p>
-                    {this.state.percent}%
+                    <p>{this.state.percent}%</p>
                 </button>
             </Col>
         );
