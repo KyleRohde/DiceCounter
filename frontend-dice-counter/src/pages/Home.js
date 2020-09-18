@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
 import DiceFetcher from '../components/DiceFetcher.js';
 
 class Home extends React.Component {
@@ -9,8 +8,8 @@ class Home extends React.Component {
         this.dataHandler = this.dataHandler.bind(this);
 
         this.state = {
-            faces: 6,
-            history: "",
+            faces: "6",
+            roll_History: "",
             entries: []
         };
     }
@@ -21,20 +20,25 @@ class Home extends React.Component {
                 this.setState({ faces: event.target.value });
                 break;
             case "history":
-                this.setState({ history: event.target.value });
+                this.setState({ roll_History: event.target.value });
                 break;
             default:
         };
     }
 
-    dataHandler(data){
-        console.log(data);
-        useHistory.push('/Action');
+    dataHandler(data) {
+        this.props.history.push({
+            pathname: '/Action',
+            state: data
+        });
     }
 
     render() {
-        let transitionState = this.state;
-        transitionState.apiMethod = "post";
+        let transitionState = {
+            faces: this.state.faces,
+            roll_History: this.state.roll_History,
+            apiMethod: "post"
+        };
 
         return (
             <React.Fragment>
@@ -43,9 +47,9 @@ class Home extends React.Component {
                 <input id="faces" type="text" value={this.state.faces} onChange={this.handleChange} />
                 <br />
                 <label htmlFor="history">Previous rolls by face (CSV, low - high):&#160;</label>
-                <input id="history" type="text" value={this.state.history} onChange={this.handleChange} />
+                <input id="history" type="text" value={this.state.roll_History} onChange={this.handleChange} />
                 <br />
-                <Link to={{pathname: "/action", state: transitionState }}>Create New From Above Fields</Link>
+                <button onClick={() => this.dataHandler(transitionState)}>Create New From Above Fields</button>
                 <br /><br />
                 <DiceFetcher passData={this.dataHandler}/>
             </React.Fragment>

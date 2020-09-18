@@ -1,6 +1,6 @@
 import React from 'react';
-import {Container, Row, Col} from 'reactstrap';
-import {Link} from 'react-router-dom';
+import { Container, Row, Col } from 'reactstrap';
+import { Link } from 'react-router-dom';
 import DiceButton from './DiceButton';
 import { dbPut, dbPost } from '../helpers/apiConnections';
 
@@ -10,7 +10,7 @@ class DiceTracker extends React.Component {
         this.increment = this.increment.bind(this);
         this.assembleData = this.assembleData.bind(this);
 
-        let historyParse = (this.props.history).split(',');
+        let historyParse = (this.props.roll_History).split(',');
         let historyTotal = 0;
         if(historyParse.length === this.props.faces){
             for (let x in historyParse){
@@ -74,15 +74,13 @@ class DiceTracker extends React.Component {
                     {this.props.description}
                 </Row>
                 <Row>
-                    <Col xs={8}>
-                        {buttons}
+                    <Col xs={10}>
+                        <Row xs={2} md={this.props.faces/2}>{buttons}</Row>
                     </Col>
-                    <Col xs={4}>
+                    <Col xs={2}>
                         <Link to="/">{this.state.total}</Link>
+                        <button onClick={this.assembleData}>Save</button>
                     </Col>
-                </Row>
-                <Row>
-                    <button onClick={this.assembleData}>Save</button>
                 </Row>
             </Container>
         );

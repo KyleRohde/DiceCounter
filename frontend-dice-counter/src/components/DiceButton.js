@@ -1,4 +1,5 @@
 import React from 'react';
+import { Col } from 'reactstrap';
 
 class DiceButton extends React.Component{
     constructor(props) {
@@ -51,10 +52,12 @@ class DiceButton extends React.Component{
 
     render() {
         return (
-            <button onClick={this.addOne} style={{background: this.state.color}}>
-                <p>{this.props.num}</p>
-                {this.state.percent}%
-            </button>
+            <Col>
+                <button onClick={this.addOne} style={{background: this.state.color}}>
+                    <p>{this.props.num}</p>
+                    {this.state.percent}%
+                </button>
+            </Col>
         );
     }
 }

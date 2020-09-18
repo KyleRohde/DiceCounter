@@ -14,7 +14,7 @@ class Action extends React.Component {
     render(){
         return(
             <DiceTracker diceId={this.props.location.state.diceId}
-                history={this.props.location.state.history}
+                roll_History={this.props.location.state.roll_History}
                 description={this.props.location.state.description}
                 faces={this.props.location.state.faces} />
         );
