@@ -10,16 +10,16 @@ class DiceTracker extends React.Component {
         this.increment = this.increment.bind(this);
         this.assembleData = this.assembleData.bind(this);
 
-        let historyParse = (this.props.roll_History).split(',');
+        let historyParse = (this.props.data.roll_History).split(',');
         let historyTotal = 0;
-        if(historyParse.length === this.props.faces){
+        if(historyParse.length === this.props.data.faces){
             for (let x in historyParse){
                 historyParse[x] = parseInt(historyParse[x], 10);
                 historyTotal += historyParse[x];
             }
         } else {
             historyParse = [];
-            for(let x = 0; x < this.props.faces; x++){
+            for(let x = 0; x < this.props.data.faces; x++){
                 historyParse.push(0);
             }
         }
@@ -40,17 +40,17 @@ class DiceTracker extends React.Component {
 
     assembleData(){
         let payload = {
-            faces: parseInt(this.props.faces),
+            faces: parseInt(this.props.data.faces),
             roll_history: this.state.history.join()
         };
-        switch(this.props.apiMethod){
+        switch(this.props.data.apiMethod){
             case "put":
-                payload.description = this.props.description;
-                payload.id = this.props.diceId;
-                dbPut("/DiceItems/" + this.props.diceId, payload);
+                payload.description = this.props.data.description;
+                payload.id = this.props.data.id;
+                dbPut("/DiceItems/" + this.props.data.id, payload);
                 break;
             case "post":
-                payload.description = "Temp " + this.props.faces;
+                payload.description = "Temp " + this.props.data.faces;
                 dbPost("/DiceItems", payload);
                 break;
             default:
@@ -60,19 +60,20 @@ class DiceTracker extends React.Component {
 
     render() {
         let buttons = [];
-        let maxFaces = this.props.faces;
+        let maxFaces = this.props.data.faces;
         for(let x = 0; x < maxFaces; x++){
             buttons.push(
                 <DiceButton key={x+1} num={x+1}
                     total={this.state.total} count={this.state.history[x]} max={maxFaces} increment={this.increment} />
             );
         }
-        const sizing = this.props.faces <= 12 ? Math.ceil(this.props.faces/2) : (this.props.faces%4 === 0 ? 4 : 6);
+        const sizing = this.props.data.faces <= 12 ?
+            Math.ceil(this.props.data.faces/2) : (this.props.data.faces%4 === 0 ? 4 : 6);
 
         return (
             <Container>
                 <Row>
-                    {this.props.description}
+                    {this.props.data.description}
                 </Row>
                 <Row>
                     <Col xs={10}>

@@ -14,17 +14,13 @@ class DiceFetcher extends React.Component {
     }
 
     async fetchDice(){
-        try {
-            let res = await dbGet('/DiceItems');
-            let newEntries = [];
-            for(let itemElem in res.data){
-                newEntries.push(
-                    <DiceDetail key={"Detail " + itemElem} passData={this.props.passData} data={res.data[itemElem]} />);
-            }
-            this.setState({entries: newEntries});
-        } catch (e) {
-            console.log(e);
+        let res = await dbGet('/DiceItems');
+        let newEntries = [];
+        for(let itemElem in res.data){
+            newEntries.push(
+                <DiceDetail key={"Detail " + itemElem} passData={this.props.passData} data={res.data[itemElem]} />);
         }
+        this.setState({entries: newEntries});
     }
 
     render() {
