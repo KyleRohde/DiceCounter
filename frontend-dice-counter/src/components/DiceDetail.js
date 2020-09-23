@@ -9,8 +9,7 @@ class DiceDetail extends React.Component{
 
     dataToParent(){
         let toReturn = this.props.data;
-        toReturn.apiMethod = "put";
-        this.props.passData(toReturn);
+        this.props.passData(toReturn, "detail");
     }
 
     render(){

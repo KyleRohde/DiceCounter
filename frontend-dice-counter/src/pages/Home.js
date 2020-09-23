@@ -9,8 +9,7 @@ class Home extends React.Component {
 
         this.state = {
             faces: "6",
-            roll_History: "",
-            entries: []
+            roll_History: ""
         };
     }
 
@@ -26,7 +25,14 @@ class Home extends React.Component {
         };
     }
 
-    dataHandler(data) {
+    dataHandler(data, origin) {
+        if(origin === "new"){
+            data.apiMethod = "post";
+        }
+        else if (origin === "detail") {
+            data.apiMethod = "put";
+        }
+
         this.props.history.push({
             pathname: '/Action',
             state: data
@@ -34,12 +40,6 @@ class Home extends React.Component {
     }
 
     render() {
-        let transitionState = {
-            faces: this.state.faces,
-            roll_History: this.state.roll_History,
-            apiMethod: "post"
-        };
-
         return (
             <React.Fragment>
                 <h1>Dice&#160;Counter</h1>
@@ -49,7 +49,9 @@ class Home extends React.Component {
                 <label htmlFor="history">Previous rolls by face (CSV, low - high):&#160;</label>
                 <input id="history" type="text" value={this.state.roll_History} onChange={this.handleChange} />
                 <br />
-                <button onClick={() => this.dataHandler(transitionState)}>Create New From Above Fields</button>
+                <button value="new" onClick={e => this.dataHandler(this.state, e.target.value)}>
+                    Create New From Above Fields
+                </button>
                 <br /><br />
                 <DiceFetcher passData={this.dataHandler}/>
             </React.Fragment>
