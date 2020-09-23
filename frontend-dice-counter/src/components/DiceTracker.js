@@ -1,6 +1,5 @@
 import React from 'react';
 import { Container, Row, Col } from 'reactstrap';
-import { Link } from 'react-router-dom';
 import DiceButton from './DiceButton';
 import { dbPut, dbPost } from '../helpers/apiConnections';
 
@@ -80,7 +79,7 @@ class DiceTracker extends React.Component {
                         <Row xs={2} md={sizing}>{buttons}</Row>
                     </Col>
                     <Col xs={2}>
-                        <Link to="/">{this.state.total}</Link>
+                        <p>Total rolls: {this.state.total}</p>
                         <button onClick={this.assembleData}>Save</button>
                     </Col>
                 </Row>
