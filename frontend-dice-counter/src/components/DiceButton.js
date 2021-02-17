@@ -1,35 +1,19 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Col } from 'reactstrap';
 
-class DiceButton extends React.Component{
-    constructor(props) {
-        super(props);
-        this.addOne = this.addOne.bind(this);
-        this.colorize = this.colorize.bind(this);
+const DiceButton = (props) => {
+    const [percent, setPercent] = useState(0.0);
+    const [color, setColor] = useState("#dddddd66");
 
-        this.state = {
-            percent: 0,
-            color: "#dddddd66"
-        };
-    }
-
-    componentDidMount(){
-        if(this.props.total){
-            this.colorize();
-        }
-    }
-
-    componentDidUpdate(prevProps){
-        if(this.props.total && this.props.total !== prevProps.total){
-            this.colorize();
-        }
-    }
+    useEffect(() => {
+        colorize();
+    }, [props.count, props.total]);
     
-    colorize(){
-        let num = ((this.props.count / this.props.total) * 100).toFixed(2);
+    const colorize = () => {
+        let newPercent = ((props.count / props.total) * 100).toFixed(2);
 
         // Calculate colors based on whether the number has been rolled more or less than average
-        let skew = ((this.props.count / this.props.total) / (1 / this.props.max)).toFixed(2);
+        let skew = ((props.count / props.total) / (1 / props.max)).toFixed(2);
         let g = Math.trunc(200 * (1 - Math.abs(skew - 1)));
         let r = skew < 1 ? Math.trunc(500 * (1 - skew)) : 0;
         let b = skew > 1 ? Math.trunc(500 * (skew - 1)) : 0;
@@ -43,23 +27,22 @@ class DiceButton extends React.Component{
             ("0" + g.toString(16)).slice(-2) +
             ("0" + b.toString(16)).slice(-2) + "66";
 
-        this.setState({ percent: num, color: newColor });
+        setColor(newColor);
+        setPercent(newPercent);
     }
 
-    addOne(){
-        this.props.increment(this.props.num);
+    const addOne = () => {
+        props.increment(props.num);
     }
 
-    render() {
-        return (
-            <Col>
-                <button onClick={this.addOne} style={{background: this.state.color, width: '100%'}}>
-                    <p>{this.props.num}</p>
-                    <p>{this.state.percent}%</p>
-                </button>
-            </Col>
-        );
-    }
+    return (
+        <Col>
+            <button onClick={addOne} style={{background: color, width: '100%'}}>
+                <p>{props.num}</p>
+                <p>{percent}%</p>
+            </button>
+        </Col>
+    );
 }
 
 export default DiceButton;

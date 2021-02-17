@@ -1,26 +1,24 @@
 import React from 'react';
 import { Row, Col } from 'reactstrap';
 
-class DiceDetail extends React.Component{
-    constructor(props){
-        super(props);
-        this.dataToParent = this.dataToParent.bind(this);
+const DiceDetail = (props) => {
+    const handleSelect = () => {
+        props.onSelect(props.data);
     }
 
-    dataToParent(){
-        let toReturn = this.props.data;
-        this.props.passData(toReturn, "detail");
-    }
-
-    render(){
-        return(
-            <Row>
-                <Col xs={8} s={6} md={4}>{this.props.data.description}</Col>
-                <Col xs={2}>{"d" + this.props.data.faces}</Col>
-                <Col xs={2}><button onClick={this.dataToParent}>Select</button></Col>
-            </Row>
-        );
-    }
+    return(
+        <Row>
+            <Col xs={8} s={6} md={4}>
+                {props.data.description}
+            </Col>
+            <Col xs={2}>
+                {"d" + props.data.faces}
+            </Col>
+            <Col xs={2}>
+                <button onClick={handleSelect}>Select</button>
+            </Col>
+        </Row>
+    );
 }
 
 export default DiceDetail;

@@ -1,55 +1,65 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Row, Col } from 'reactstrap';
+
 import DiceButton from './DiceButton';
 import { dbPut, dbPost } from '../helpers/apiConnections';
 
-class DiceTracker extends React.Component {
-    constructor(props) {
-        super(props);
-        this.increment = this.increment.bind(this);
-        this.assembleData = this.assembleData.bind(this);
+const DiceTracker = (props) => {
+    const [total, setTotal] = useState(0);
+    const [incrementIndex, setIncrementIndex] = useState(-1);
+    const [history, setHistory] = useState([]);
 
-        let historyParse = (this.props.data.roll_History).split(',');
+    useEffect(() => {
+        let historyParse = (props.data.rollHistory).split(',');
         let historyTotal = 0;
-        if(historyParse.length === this.props.data.faces){
+
+        if(historyParse.length === props.data.faces){
             for (let x in historyParse){
                 historyParse[x] = parseInt(historyParse[x], 10);
                 historyTotal += historyParse[x];
             }
         } else {
             historyParse = [];
-            for(let x = 0; x < this.props.data.faces; x++){
+            for(let x = 0; x < props.data.faces; x++){
                 historyParse.push(0);
             }
         }
+        
+        setTotal(historyTotal);
+        setHistory(historyParse);
+    }, []);
 
-        this.state = {
-            total: historyTotal,
-            history: historyParse
-        };
+    useEffect(() => {
+        if(incrementIndex > -1){
+            let newTotal = total;
+            let newHistory = history;
+
+            newTotal++;
+            newHistory[incrementIndex]++;
+
+            setHistory(newHistory);
+            setTotal(newTotal);
+            setIncrementIndex(-1);
+        }
+    }, [incrementIndex]);
+
+    const increment = (num) => {
+        setIncrementIndex(num - 1);
     }
 
-    increment(num){
-        let plus = this.state.total;
-        let newHistory = this.state.history;
-        plus++;
-        newHistory[num-1]++;
-        this.setState({ total: plus, history: newHistory });
-    }
-
-    assembleData(){
+    const assembleData = () => {
         let payload = {
-            faces: parseInt(this.props.data.faces),
-            roll_history: this.state.history.join()
+            faces: parseInt(props.data.faces),
+            rollHistory: history.join()
         };
-        switch(this.props.data.apiMethod){
+        switch(props.data.apiMethod){
             case "put":
-                payload.description = this.props.data.description;
-                payload.id = this.props.data.id;
-                dbPut("/DiceItems/" + this.props.data.id, payload);
+                payload.description = props.data.description;
+                payload.id = props.data.id;
+                dbPut("/DiceItems/" + props.data.id, payload);
                 break;
             case "post":
-                payload.description = "Temp " + this.props.data.faces;
+                payload.description = "Temp " + props.data.faces;
                 dbPost("/DiceItems", payload);
                 break;
             default:
@@ -57,35 +67,31 @@ class DiceTracker extends React.Component {
         }
     }
 
-    render() {
-        let buttons = [];
-        let maxFaces = this.props.data.faces;
-        for(let x = 0; x < maxFaces; x++){
-            buttons.push(
-                <DiceButton key={x+1} num={x+1}
-                    total={this.state.total} count={this.state.history[x]} max={maxFaces} increment={this.increment} />
-            );
-        }
-        const sizing = this.props.data.faces <= 12 ?
-            Math.ceil(this.props.data.faces/2) : (this.props.data.faces%4 === 0 ? 4 : 6);
-
-        return (
-            <Container>
-                <Row>
-                    {this.props.data.description}
-                </Row>
-                <Row>
-                    <Col xs={10}>
-                        <Row xs={2} md={sizing}>{buttons}</Row>
-                    </Col>
-                    <Col xs={2}>
-                        <p>Total rolls: {this.state.total}</p>
-                        <button onClick={this.assembleData}>Save</button>
-                    </Col>
-                </Row>
-            </Container>
-        );
-    }
+    return (
+        <Container>
+            <Row>
+                {props.data.description}
+            </Row>
+            <Row>
+                <Col xs={10}>
+                    <Row xs={2} md={4}>
+                    {
+                        history.map((data, index) => {
+                            return(
+                                <DiceButton key={"button" + index} num={index+1} total={total} 
+                                    count={data} max={props.data.faces} increment={increment} />
+                            );
+                        })
+                    }
+                    </Row>
+                </Col>
+                <Col xs={2}>
+                    <p>Total rolls: {total}</p>
+                    <button onClick={assembleData}>Save</button>
+                </Col>
+            </Row>
+        </Container>
+    );
 }
 
 export default DiceTracker;

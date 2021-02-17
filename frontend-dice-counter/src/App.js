@@ -1,11 +1,10 @@
 import React from 'react';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 
-import Home from './pages/Home';
-import Action from './pages/Action';
+import Home from './pages/homePage';
+import Action from './pages/actionPage';
 
-class App extends React.Component {
-  render() {
+const App = () => {
     return (
         <BrowserRouter>
             <Switch>
@@ -14,7 +13,6 @@ class App extends React.Component {
             </Switch>
         </BrowserRouter>
     );
-  }
 }
 
 export default App;
