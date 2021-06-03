@@ -25,6 +25,7 @@
 
 /backend-dice-counter/.vs/
 /backend-dice-counter/*.sln
-backend-dice-counter/backend-dice-counter/[Bb]in/
-backend-dice-counter/backend-dice-counter/[Oo]bj/
-backend-dice-counter/backend-dice-counter/*.user
+/backend-dice-counter/[Bb]in/
+/backend-dice-counter/[Oo]bj/
+/backend-dice-counter/*.user
+/backend-dice-counter/.idea

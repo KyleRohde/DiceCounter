@@ -7,7 +7,7 @@ const DiceFetcher = (props) => {
     const [entries, setEntries] = useState([]);
 
     const fetchDice = async () => {
-        let res = await dbGet('/DiceItems');
+        let res = await dbGet('/DiceItem');
         let newEntries = [];
 
         for(let itemElem in res.data){

@@ -10,9 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore;
-using backend_dice_counter.Models;
-using MySqlConnector;
+using Microsoft.OpenApi.Models;
 using backend_dice_counter.Extensions;
 
 namespace backend_dice_counter
@@ -29,9 +27,12 @@ namespace backend_dice_counter
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.ConfigureMySqlContext(Configuration);
             services.ConfigureCors();
             services.AddControllers();
+            /*services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "backend_dice_counter", Version = "v1" });
+            });*/
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -39,8 +40,10 @@ namespace backend_dice_counter
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
-            }
+                app.UseDeveloperExceptionPage();/*
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "backend_dice_counter v1"));
+            */}
 
             app.UseHttpsRedirection();
 
